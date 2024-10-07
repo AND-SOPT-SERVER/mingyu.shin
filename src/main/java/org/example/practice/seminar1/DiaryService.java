@@ -24,7 +24,6 @@ public class DiaryService {
         }catch (Exception exception){
             System.out.println(exception.getMessage());
         }
-
     }
 
     public void deleteDiary(final long id) {
