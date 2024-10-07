@@ -9,7 +9,6 @@ public class Main {
             ui = new DiaryUI(new DiaryController());
             ui.runRepeatedly();
         } catch (Throwable t) {
-
         }
     }
 
