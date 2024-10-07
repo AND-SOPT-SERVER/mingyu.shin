@@ -16,10 +16,6 @@ public class DiaryRepository {
         storage.put(id, diary.getBody());
     }
 
-    public void update(long id, Diary diary) {
-        storage.put(id, diary.getBody());
-    }
-
     public List<Diary> findAll() {
         List<Diary> diaries = new ArrayList<>();
         for (long index = 1; index <= numbering.longValue(); index++) {
@@ -29,7 +25,7 @@ public class DiaryRepository {
         return diaries;
     }
 
-    public void updateDiary(long id, String body) {
+    public void updateDiaryById(long id, String body) {
         searchDiaryById(id);
         update(id, Diary.of(id, body));
     }
@@ -40,6 +36,10 @@ public class DiaryRepository {
             storage.put(i, storage.get(i + 1));
         }
         storage.remove(numbering.getAndDecrement());
+    }
+
+    private void update(long id, Diary diary) {
+        storage.put(id, diary.getBody());
     }
 
     private void searchDiaryById(long id) {

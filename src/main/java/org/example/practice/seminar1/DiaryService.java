@@ -20,7 +20,7 @@ public class DiaryService {
 
     public void updateDiary(final long id, final String body) {
         try {
-            diaryRepository.updateDiary(id, body);
+            diaryRepository.updateDiaryById(id, body);
         }catch (Exception exception){
             System.out.println(exception.getMessage());
         }
