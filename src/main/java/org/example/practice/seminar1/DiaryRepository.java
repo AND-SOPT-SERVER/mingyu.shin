@@ -11,7 +11,7 @@ public class DiaryRepository {
     private final Map<Long, String> storage = new ConcurrentHashMap<>();
     private final AtomicLong numbering = new AtomicLong();
 
-    public void save(Diary diary) {
+    public void save(final Diary diary) {
         final long id = numbering.addAndGet(1);
         storage.put(id, diary.getBody());
     }
@@ -25,12 +25,12 @@ public class DiaryRepository {
         return diaries;
     }
 
-    public void updateDiaryById(long id, String body) {
+    public void updateDiaryById(final long id,final String body) {
         searchDiaryById(id);
         update(id, Diary.of(id, body));
     }
 
-    public void deleteDiaryById(long id) {
+    public void deleteDiaryById(final long id) {
         searchDiaryById(id);
         for (long i = id; i < numbering.get(); i++) {
             storage.put(i, storage.get(i + 1));
@@ -38,11 +38,11 @@ public class DiaryRepository {
         storage.remove(numbering.getAndDecrement());
     }
 
-    private void update(long id, Diary diary) {
+    private void update(final long id, Diary diary) {
         storage.put(id, diary.getBody());
     }
 
-    private void searchDiaryById(long id) {
+    private void searchDiaryById(final long id) {
         if (!storage.containsKey(id)) {
             throw new NoSuchElementException("아이디가 존재하지 않습니다");
         }
