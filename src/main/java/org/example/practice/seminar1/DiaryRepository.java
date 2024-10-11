@@ -22,13 +22,13 @@ public class DiaryRepository {
     private boolean init = false;
 
     void saveDiary(final Diary diary) throws IOException, ClassNotFoundException {
-        init();
+        init(init);
         final long id = numbering.addAndGet(1);
         save(id, diary.getBody());
     }
 
     List<Diary> findAll() throws IOException, ClassNotFoundException {
-        init();
+        init(false);
         List<Diary> diaries = new ArrayList<>();
         for (long index = 1; index <= numbering.longValue(); index++) {
             final String body = storage.get(index);
@@ -38,18 +38,18 @@ public class DiaryRepository {
     }
 
     void updateDiaryById(final long id, final String body) throws IOException, ClassNotFoundException {
-        init();
+        init(init);
         searchDiaryById(id);
         update(id, Diary.of(id, body));
     }
 
     void deleteDiaryById(final long id) throws IOException, ClassNotFoundException {
-        init();
+        init(init);
         searchDiaryById(id);
         delete(id);
     }
 
-    private void init() throws IOException, ClassNotFoundException {
+    private void init(boolean flag) throws IOException, ClassNotFoundException {
         if (!init) {
             FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.READ);
 
@@ -90,7 +90,7 @@ public class DiaryRepository {
         FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
         FileLock lock = channel.lock();
         ObjectOutputStream oos = new ObjectOutputStream(Channels.newOutputStream(channel));
-        for (long i = id; i < numbering.get(); i++) {
+        for (long i = id; i < numbering.longValue(); i++) {
             storage.put(i, storage.get(i + 1));
         }
         storage.remove(numbering.getAndDecrement());
