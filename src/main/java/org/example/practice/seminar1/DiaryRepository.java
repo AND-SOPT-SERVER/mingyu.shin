@@ -16,19 +16,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DiaryRepository {
-    private final Map<Long, String> storage = new ConcurrentHashMap<>();
+    private Map<Long, String> storage = new ConcurrentHashMap<>();
     private final AtomicLong numbering = new AtomicLong();
     private final String filePath = "diary_storage.ser";
     private boolean init = false;
 
     void saveDiary(final Diary diary) throws IOException, ClassNotFoundException {
-        init(init);
+        init();
         final long id = numbering.addAndGet(1);
         save(id, diary.getBody());
     }
 
     List<Diary> findAll() throws IOException, ClassNotFoundException {
-        init(false);
+        init();
         List<Diary> diaries = new ArrayList<>();
         for (long index = 1; index <= numbering.longValue(); index++) {
             final String body = storage.get(index);
@@ -38,33 +38,31 @@ public class DiaryRepository {
     }
 
     void updateDiaryById(final long id, final String body) throws IOException, ClassNotFoundException {
-        init(init);
+        init();
         searchDiaryById(id);
         update(id, Diary.of(id, body));
     }
 
     void deleteDiaryById(final long id) throws IOException, ClassNotFoundException {
-        init(init);
+        init();
         searchDiaryById(id);
         delete(id);
     }
 
-    private void init(boolean flag) throws IOException, ClassNotFoundException {
-        if (!flag) {
-            FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.READ);
-
-            FileLock lock = channel.lock(0, Long.MAX_VALUE, true);
-            if (channel.size() != 0) {
-                ObjectInputStream ois = new ObjectInputStream(Channels.newInputStream(channel));
-                ConcurrentHashMap<Long, String> map = (ConcurrentHashMap<Long, String>) ois.readObject();
-                numbering.set(map.size());
-                for (long index = 1; index <= numbering.longValue(); index++) {
-                    storage.put(index, map.get(index));
-                }
-                init = true;
+    private void init() throws IOException, ClassNotFoundException {
+        FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.READ);
+        FileLock lock = channel.lock(0, Long.MAX_VALUE, true);
+        if (channel.size() != 0) {
+            ObjectInputStream ois = new ObjectInputStream(Channels.newInputStream(channel));
+            storage = (ConcurrentHashMap<Long, String>) ois.readObject();
+            numbering.set(storage.size());
+            for (long index = 1; index <= numbering.longValue(); index++) {
+                storage.put(index, storage.get(index));
             }
-            lock.release();
+            init = true;
         }
+        lock.release();
+
     }
 
     private void update(final long id, Diary diary) throws IOException {
@@ -78,7 +76,8 @@ public class DiaryRepository {
     }
 
     private void save(long id, String body) throws IOException {
-        FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE);
         FileLock lock = channel.lock();
         ObjectOutputStream oos = new ObjectOutputStream(Channels.newOutputStream(channel));
         storage.put(id, body);
@@ -87,7 +86,8 @@ public class DiaryRepository {
     }
 
     private void delete(final long id) throws IOException {
-        FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE);
         FileLock lock = channel.lock();
         ObjectOutputStream oos = new ObjectOutputStream(Channels.newOutputStream(channel));
         for (long i = id; i < numbering.longValue(); i++) {
