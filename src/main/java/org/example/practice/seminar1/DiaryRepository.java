@@ -50,7 +50,7 @@ public class DiaryRepository {
     }
 
     private void init(boolean flag) throws IOException, ClassNotFoundException {
-        if (!init) {
+        if (!flag) {
             FileChannel channel = FileChannel.open(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.READ);
 
             FileLock lock = channel.lock(0, Long.MAX_VALUE, true);
