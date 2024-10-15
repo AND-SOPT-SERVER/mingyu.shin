@@ -40,6 +40,19 @@ public class DiaryEntity {
         return title;
     }
 
+    public String getBody() {
+        return body;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setBody(final String body){
+        validBodyLength(body);
+        this.body = body;
+    }
+
     private static void validBodyLength(final String body){
         if(body.length() > 30){
             throw new IllegalArgumentException();
