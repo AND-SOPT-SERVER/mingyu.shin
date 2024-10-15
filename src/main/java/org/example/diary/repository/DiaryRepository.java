@@ -9,5 +9,6 @@ import java.util.List;
 @Component
 public interface DiaryRepository extends JpaRepository<DiaryEntity,Long> {
 
-    List<DiaryEntity> findTop10ByOrderByDateAsc();
+    @Query(value = "SELECT * FROM diary_entity ORDER BY date ASC LIMIT 10", nativeQuery = true)
+    List<DiaryEntity> findTop10ByCreatedDate();
 }
