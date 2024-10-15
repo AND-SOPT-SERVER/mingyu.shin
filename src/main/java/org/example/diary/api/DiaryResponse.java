@@ -1,19 +1,19 @@
 package org.example.diary.api;
 
 public class DiaryResponse {
-    private long id;
-    private String name;
+    private final long id;
+    private final String title;
 
-    public DiaryResponse(long id, String name) {
+    public DiaryResponse(long id, String title) {
         this.id = id;
-        this.name = name;
+        this.title = title;
     }
 
     public long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 }
