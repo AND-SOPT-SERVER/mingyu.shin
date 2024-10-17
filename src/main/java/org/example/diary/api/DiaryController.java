@@ -1,5 +1,6 @@
 package org.example.diary.api;
 
+import org.example.diary.repository.Category;
 import org.example.diary.repository.DiaryEntity;
 import org.example.diary.service.Diary;
 import org.example.diary.service.DiaryService;
@@ -20,28 +21,33 @@ public class DiaryController {
 
     @PostMapping("/diaries")
     void post(@RequestBody DiaryCreateRequest request) {
-        diaryService.createDiary(request.title(), request.body());
+        diaryService.createDiary(request);
     }
 
     @GetMapping("/diaries")
     ResponseEntity<DiaryListResponse> get() {
-        List<Diary> diaryList = diaryService.getList();
+        List<Diary> diaryList = diaryService.getListById();
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
         for (Diary diary : diaryList) {
-            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getName()));
+            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getTitle()));
+        }
+        return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));
+    }
+
+    @GetMapping("/diaries/category")
+    ResponseEntity<DiaryListResponse> getByCategory(@RequestBody Category category){
+        List<DiaryEntity> diaryList = diaryService.getListByCategory(category);
+        List<DiaryResponse> diaryResponseList = new ArrayList<>();
+        for (DiaryEntity diary : diaryList) {
+            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getTitle()));
         }
         return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));
     }
 
     @GetMapping("/diaries/{id}")
     ResponseEntity<DiarySpecificResponse> getSpecific(@PathVariable long id) {
-        DiaryEntity diaryEntity = diaryService.getDiarySpecific(id);
-        return ResponseEntity.ok(new DiarySpecificResponse(
-                diaryEntity.getId(),
-                diaryEntity.getTitle(),
-                diaryEntity.getBody(),
-                diaryEntity.getDate()
-        ));
+        DiarySpecificResponse response =  diaryService.getDiarySpecific(id);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/diaries/{id}")
