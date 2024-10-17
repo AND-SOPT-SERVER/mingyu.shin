@@ -5,10 +5,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface DiaryRepository extends JpaRepository<DiaryEntity,Long> {
 
-    @Query(value = "SELECT * FROM diary_entity ORDER BY date ASC LIMIT 10", nativeQuery = true)
-    List<DiaryEntity> findTop10ByCreatedDate();
+    @Query("SELECT d FROM DiaryEntity d ORDER BY LENGTH(d.body) DESC")
+    List<DiaryEntity> findAllOrderByBodyLengthDesc();;
+
+    Optional<DiaryEntity> findByTitle(String title);
+
+    List<DiaryEntity> findAllByCategory(Category category);
 }
