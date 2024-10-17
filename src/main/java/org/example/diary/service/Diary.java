@@ -1,8 +1,5 @@
 package org.example.diary.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 public class Diary {
     private final long id;
     private final String title;
@@ -16,7 +13,7 @@ public class Diary {
         return id;
     }
 
-    public String getName() {
+    public String getTitle() {
         return title;
     }
 }
