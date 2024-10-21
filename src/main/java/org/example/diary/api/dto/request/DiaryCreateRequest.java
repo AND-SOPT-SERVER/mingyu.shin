@@ -1,7 +1,6 @@
-package org.example.diary.api;
+package org.example.diary.api.dto.request;
 
-import org.example.diary.repository.Category;
-import org.hibernate.Cache;
+import org.example.diary.repository.entity.Category;
 
 public record DiaryCreateRequest(
         String title,

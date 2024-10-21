@@ -1,6 +1,6 @@
-package org.example.diary.api;
+package org.example.diary.api.dto.response;
 
-import org.example.diary.repository.Category;
+import org.example.diary.repository.entity.Category;
 
 import java.time.LocalDateTime;
 

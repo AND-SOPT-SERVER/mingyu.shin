@@ -1,4 +1,4 @@
-package org.example.diary.repository;
+package org.example.diary.repository.entity;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;

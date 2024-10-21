@@ -1,4 +1,4 @@
-package org.example.diary.repository;
+package org.example.diary.repository.entity;
 
 public enum Category {
     FOOD,

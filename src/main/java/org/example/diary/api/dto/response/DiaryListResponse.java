@@ -1,9 +1,9 @@
-package org.example.diary.api;
+package org.example.diary.api.dto.response;
 
 import java.util.List;
 
 public class DiaryListResponse {
-    private List<DiaryResponse> diaryResponseList;
+    private final List<DiaryResponse> diaryResponseList;
 
     public List<DiaryResponse> getDiaryResponseList() {
         return diaryResponseList;
