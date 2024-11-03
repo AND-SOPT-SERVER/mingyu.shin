@@ -9,7 +9,7 @@ import org.example.diary.repository.adapter.DiaryFinder;
 import org.example.diary.repository.adapter.DiarySaver;
 import org.example.diary.repository.adapter.MemberFinder;
 import org.example.diary.repository.entity.Category;
-import org.example.diary.repository.entity.DiaryEntity;
+import org.example.diary.repository.entity.Diary;
 import org.example.diary.repository.entity.Member;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +35,7 @@ public class DiaryService {
     public void createDiary(final DiaryCreateRequest diaryCreateRequest) {
         Member member = memberFinder.findMemberById(diaryCreateRequest.userId());
         diarySaver.createDiary(
-                DiaryEntity.of(
+                Diary.of(
                         diaryCreateRequest.title(),
                         diaryCreateRequest.body(),
                         diaryCreateRequest.category(),
@@ -45,30 +45,30 @@ public class DiaryService {
     }
 
     public DiarySpecificResponse getDiarySpecific(final long id) {
-        DiaryEntity diaryEntity = diaryFinder.getDiaryEntity(id);
+        Diary diary = diaryFinder.getDiaryEntity(id);
         return new DiarySpecificResponse(
-                diaryEntity.getId(),
-                diaryEntity.getTitle(),
-                diaryEntity.getBody(),
-                diaryEntity.getCategory(),
-                diaryEntity.getCreatedAt()
+                diary.getId(),
+                diary.getTitle(),
+                diary.getBody(),
+                diary.getCategory(),
+                diary.getCreatedAt()
         );
     }
 
     public List<DiaryResponse> getList() {
-        List<DiaryEntity> diaryList = diaryFinder.findDiaryList();
+        List<Diary> diaryList = diaryFinder.findDiaryList();
         final List<DiaryResponse> diaryListResponseList = new ArrayList<>();
-        for (DiaryEntity diaryEntity : diaryList) {
-            diaryListResponseList.add(DiaryResponse.from(diaryEntity));
+        for (Diary diary : diaryList) {
+            diaryListResponseList.add(DiaryResponse.from(diary));
         }
         return diaryListResponseList;
     }
 
     public List<DiaryResponse> getListByCategory(final Category category) {
-        List<DiaryEntity> diaryListByCategory = diaryFinder.findDiaryListByCategory(category);
+        List<Diary> diaryListByCategory = diaryFinder.findDiaryListByCategory(category);
         final List<DiaryResponse> diaryListResponseList = new ArrayList<>();
-        for (DiaryEntity diaryEntity : diaryListByCategory) {
-            diaryListResponseList.add(DiaryResponse.from(diaryEntity));
+        for (Diary diary : diaryListByCategory) {
+            diaryListResponseList.add(DiaryResponse.from(diary));
         }
         return diaryListResponseList;
     }

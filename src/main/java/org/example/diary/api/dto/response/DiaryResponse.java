@@ -1,6 +1,6 @@
 package org.example.diary.api.dto.response;
 
-import org.example.diary.repository.entity.DiaryEntity;
+import org.example.diary.repository.entity.Diary;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +18,7 @@ public class DiaryResponse {
         this.username = username;
     }
 
-    public static DiaryResponse from(final DiaryEntity diary){
+    public static DiaryResponse from(final Diary diary){
         return new DiaryResponse(diary.getId(), diary.getTitle(), diary.getCreatedAt(),diary.getMember().getUserName());
     }
 

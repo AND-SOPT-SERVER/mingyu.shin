@@ -6,7 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class DiaryEntity {
+public class Diary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,10 @@ public class DiaryEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    protected DiaryEntity() {
+    protected Diary() {
     }
 
-    private DiaryEntity(
+    private Diary(
             final String title,
             final String body,
             final LocalDateTime createdAt,
@@ -45,14 +45,14 @@ public class DiaryEntity {
     }
 
 
-    public static DiaryEntity of(
+    public static Diary of(
             final String title,
             final String body,
             final Category category,
             final LocalDateTime date,
             final Member member
     ) {
-        return new DiaryEntity(title, body, date, category, member);
+        return new Diary(title, body, date, category, member);
     }
 
     public long getId() {
