@@ -1,14 +1,25 @@
 package org.example.diary.api.dto.response;
 
+import org.example.diary.repository.entity.Diary;
+
+import java.time.LocalDateTime;
+
 public class DiaryResponse {
     private final long id;
     private final String title;
-    private final String body;
+    private final String username;
+    private final LocalDateTime createdAt;
 
-    public DiaryResponse(long id, String title, String body) {
+
+    private DiaryResponse(long id, String title,LocalDateTime createdAt, String username) {
         this.id = id;
         this.title = title;
-        this.body = body;
+        this.createdAt = createdAt;
+        this.username = username;
+    }
+
+    public static DiaryResponse from(final Diary diary){
+        return new DiaryResponse(diary.getId(), diary.getTitle(), diary.getCreatedAt(),diary.getMember().getUserName());
     }
 
     public long getId() {
@@ -19,7 +30,11 @@ public class DiaryResponse {
         return title;
     }
 
-    public String getBody(){
-        return body;
+    public String getUsername(){
+        return username;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

@@ -1,6 +1,6 @@
 package org.example.diary.repository.adapter;
 
-import org.example.diary.repository.entity.DiaryEntity;
+import org.example.diary.repository.entity.Diary;
 import org.example.diary.repository.DiaryRepository;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +17,8 @@ public class DiarySaver {
         this.diaryFinder = diaryFinder;
     }
 
-    public void createDiary(final DiaryEntity diary){
-        Optional<DiaryEntity> diaryEntity = diaryFinder.findByTitle(diary.getTitle());
+    public void createDiary(final Diary diary){
+        Optional<Diary> diaryEntity = diaryFinder.findByTitle(diary.getTitle());
         if (diaryEntity.isPresent()) {
             throw new RuntimeException("중복되는 제목입니다.");
         }
@@ -26,8 +26,8 @@ public class DiarySaver {
     }
 
     public void updateDiary(final long id, final String body){
-        DiaryEntity diaryEntity = diaryFinder.getDiaryEntity(id);
-        diaryEntity.setBody(body);
-        diaryRepository.save(diaryEntity);
+        Diary diary = diaryFinder.getDiaryEntity(id);
+        diary.setBody(body);
+        diaryRepository.save(diary);
     }
 }

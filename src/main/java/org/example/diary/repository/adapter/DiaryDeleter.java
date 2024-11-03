@@ -1,6 +1,6 @@
 package org.example.diary.repository.adapter;
 
-import org.example.diary.repository.entity.DiaryEntity;
+import org.example.diary.repository.entity.Diary;
 import org.example.diary.repository.DiaryRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +16,8 @@ public class DiaryDeleter {
     }
 
     public void deleteDiary(final long id){
-        DiaryEntity diaryEntity = diaryFinder.getDiaryEntity(id);
-        diaryRepository.delete(diaryEntity);
+        Diary diary = diaryFinder.getDiaryEntity(id);
+        diaryRepository.delete(diary);
     }
 }
 
