@@ -1,6 +1,6 @@
 package org.example.diary.service;
 
-import org.example.diary.api.dto.request.CreateMemberRequest;
+import org.example.diary.api.dto.request.MemberCreateRequest;
 import org.example.diary.api.dto.request.SignInRequest;
 import org.example.diary.repository.adapter.MemberFinder;
 import org.example.diary.repository.adapter.MemberSaver;
@@ -19,7 +19,7 @@ public class MemberService {
         this.memberSaver = memberSaver;
     }
 
-    public void createMember(CreateMemberRequest request){
+    public void createMember(MemberCreateRequest request){
         memberSaver.createMember(new Member(request.userName(), request.password(), request.nickname()));
     }
 

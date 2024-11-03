@@ -1,8 +1,8 @@
 package org.example.diary.api;
 
-import org.example.diary.api.dto.request.CreateMemberRequest;
+import org.example.diary.api.dto.request.MemberCreateRequest;
 import org.example.diary.api.dto.request.SignInRequest;
-import org.example.diary.api.dto.response.CreateMemberResponse;
+import org.example.diary.api.dto.response.MemberCreateResponse;
 import org.example.diary.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +22,14 @@ public class MembersController {
     }
 
     @PostMapping
-    ResponseEntity<Void> createUser(@RequestBody CreateMemberRequest request){
+    ResponseEntity<Void> createUser(@RequestBody MemberCreateRequest request){
         memberService.createMember(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/sign-in")
-    ResponseEntity<CreateMemberResponse> signIn(@RequestBody SignInRequest request){
-         final CreateMemberResponse response =  new CreateMemberResponse(memberService.signIn(request));
+    ResponseEntity<MemberCreateResponse> signIn(@RequestBody SignInRequest request){
+         final MemberCreateResponse response =  new MemberCreateResponse(memberService.signIn(request));
         return ResponseEntity.ok(response);
     }
 
