@@ -13,9 +13,10 @@ import java.util.Optional;
 public interface DiaryRepository extends JpaRepository<DiaryEntity,Long> {
 
     @Query("SELECT d FROM DiaryEntity d ORDER BY LENGTH(d.body) ASC ")
-    List<DiaryEntity> findAllOrderByBodyLengthDesc();
+    List<DiaryEntity> findAllOrderByBodyLengthAsc();
 
     Optional<DiaryEntity> findByTitle(String title);
 
-    List<DiaryEntity> findAllByCategory(Category category);
+    @Query("SELECT d FROM DiaryEntity d WHERE d.category = :category ORDER BY LENGTH(d.body) ASC")
+    List<DiaryEntity> findAllByCategoryOrderByBodyLengthDesc(Category category);
 }
