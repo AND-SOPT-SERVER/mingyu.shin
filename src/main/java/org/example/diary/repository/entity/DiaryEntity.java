@@ -7,40 +7,59 @@ import java.time.LocalDateTime;
 
 @Entity
 public class DiaryEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Column
-    public String title;
+    private String title;
 
     @Column
-    public Category category;
+    private Category category;
 
-    @Column String body;
+    @Column
+    private String body;
     @CreatedDate
-    LocalDateTime date;
+    private LocalDateTime createdAt;
 
-    protected DiaryEntity(){
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    protected DiaryEntity() {
     }
 
-    private DiaryEntity(final String title, final String body,final LocalDateTime date,final Category category){
+    private DiaryEntity(
+            final String title,
+            final String body,
+            final LocalDateTime createdAt,
+            final Category category,
+            final Member member
+    ) {
         this.title = title;
         this.body = body;
-        this.date = date;
+        this.createdAt = createdAt;
         this.category = category;
+        this.member = member;
     }
 
-    public static DiaryEntity of(final String title, final String body, final Category category, final LocalDateTime date){
-        validBodyLength(body);
-        return new DiaryEntity(title, body,date,category);
+
+    public static DiaryEntity of(
+            final String title,
+            final String body,
+            final Category category,
+            final LocalDateTime date,
+            final Member member
+    ) {
+        return new DiaryEntity(title, body, date, category, member);
     }
 
     public long getId() {
         return id;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 
@@ -52,18 +71,15 @@ public class DiaryEntity {
         return category;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setBody(final String body){
-        validBodyLength(body);
+    public Member getMember() {
+        return member;
+    }
+
+    public void setBody(final String body) {
         this.body = body;
-    }
-
-    private static void validBodyLength(final String body){
-        if(body.length() > 30){
-            throw new IllegalArgumentException("일기의 글자수는 30자 이하입니다."); //413 Content Too Large, 400
-        }
     }
 }
